@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import words from './words';
 import './App.css';
 
 const normalizeRomanization = (str) => {
-  // Make lowercase and trim
   let normalized = str.trim().toLowerCase();
-  // Treat 'r' and 'l' as the same:
   normalized = normalized.replace(/r/g, 'l');
   return normalized;
 };
@@ -15,7 +13,8 @@ const App = () => {
   const [userInput, setUserInput] = useState('');
   const [score, setScore] = useState({ correct: 0, wrong: 0 });
   const [feedback, setFeedback] = useState('');
-  const [status, setStatus] = useState(''); // 'correct' or 'wrong' or ''
+  const [status, setStatus] = useState(''); // 'correct', 'wrong', or ''
+  const inputRef = useRef(null);
 
   useEffect(() => {
     pickRandomWord();
@@ -28,6 +27,32 @@ const App = () => {
     setFeedback('');
     setStatus('');
   };
+
+  useEffect(() => {
+    // Focus the input when a new word is loaded and no feedback is displayed
+    if (inputRef.current && !feedback) {
+      inputRef.current.focus();
+    }
+  }, [feedback, currentWord]);
+
+  useEffect(() => {
+    // Only add the global keydown listener when feedback is shown
+    // This listener will handle pressing Enter to go to next word.
+    const handleGlobalKeyDown = (e) => {
+      if (feedback && e.key === 'Enter') {
+        e.preventDefault(); // Prevent any default action
+        handleNextWord();
+      }
+    };
+
+    if (feedback) {
+      window.addEventListener('keydown', handleGlobalKeyDown);
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleGlobalKeyDown);
+    };
+  }, [feedback]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -47,6 +72,10 @@ const App = () => {
     }
   };
 
+  const handleNextWord = () => {
+    pickRandomWord();
+  };
+
   return (
     <div className="app-container">
       <div className="scoreboard">
@@ -59,6 +88,7 @@ const App = () => {
             <form onSubmit={handleSubmit} className="input-container">
               <input
                 type="text"
+                ref={inputRef}
                 value={userInput}
                 placeholder="Type romanization..."
                 onChange={(e) => setUserInput(e.target.value)}
@@ -70,7 +100,10 @@ const App = () => {
             <>
               <div className="feedback">{feedback}</div>
               <div className="feedback">Translation: "{currentWord.translation}"</div>
-              <button onClick={pickRandomWord}>Next Word</button>
+              <button onClick={handleNextWord}>Next Word</button>
+              <div style={{ marginTop: '5px', fontSize: '0.9rem', color: '#666' }}>
+                (Press Enter for next word)
+              </div>
             </>
           )}
         </div>
