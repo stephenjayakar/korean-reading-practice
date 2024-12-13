@@ -1,0 +1,108 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  background: #f9fafb;
+  color: #333;
+  height: 100%;
+  width: 100%;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+}
+
+.scoreboard {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 1rem;
+}
+
+.word-container {
+  text-align: center;
+  margin-bottom: 30px;
+  transition: background-color 0.3s;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.word-container.correct {
+  background-color: #dff0d8; /* light green */
+}
+
+.word-container.wrong {
+  background-color: #f2dede; /* light red */
+}
+
+.word {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.input-container {
+  width: 80%;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 1.2rem;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  outline: none;
+  text-align: center;
+  transition: border-color 0.3s;
+}
+
+input[type="text"]:focus {
+  border-color: #333;
+}
+
+button {
+  margin-top: 15px;
+  width: 100%;
+  padding: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #444;
+}
+
+.feedback {
+  margin-top: 10px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Mobile-friendly adjustments */
+@media (max-width: 600px) {
+  .word {
+    font-size: 2.5rem;
+  }
+
+  button {
+    font-size: 1rem;
+  }
+}
