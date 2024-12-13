@@ -38,7 +38,7 @@ const App = () => {
 
     if (normalizedUserInput === normalizedAnswer) {
       setScore({ ...score, correct: score.correct + 1 });
-      setFeedback('✅ Correct!');
+      setFeedback(`✅ Correct! Romanization: "${currentWord.romanization}"`);
       setStatus('correct');
     } else {
       setScore({ ...score, wrong: score.wrong + 1 });
@@ -69,6 +69,7 @@ const App = () => {
           {feedback && (
             <>
               <div className="feedback">{feedback}</div>
+              <div className="feedback">Translation: "{currentWord.translation}"</div>
               <button onClick={pickRandomWord}>Next Word</button>
             </>
           )}
